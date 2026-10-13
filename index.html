@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vietnam Trip Master Planner - Oct 16 to 26, 2026</title>
+<style>
+  :root {
+    --primary: #c2410c;
+    --primary-light: #ffedd5;
+    --dark: #0f172a;
+    --gray-bg: #f8fafc;
+    --card-bg: #ffffff;
+    --border: #e2e8f0;
+    --locked-bg: #f1f5f9;
+    --locked-border: #cbd5e1;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { background: var(--gray-bg); color: var(--text-main); line-height: 1.5; padding: 24px 16px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 28px; }
+  header h1 { font-size: 28px; color: var(--dark); font-weight: 800; letter-spacing: -0.5px; }
+  header p { color: var(--text-muted); margin-top: 6px; font-size: 14px; }
+
+  /* Locked Vault */
+  .vault-card {
+    background: var(--card-bg);
+    border: 1px solid var(--locked-border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .vault-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  .vault-title { font-size: 16px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 8px; }
+  .lock-badge { font-size: 11px; background: #fee2e2; color: #991b1b; padding: 3px 8px; border-radius: 999px; font-weight: 700; text-transform: uppercase; }
+  .vault-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .vault-item {
+    background: var(--locked-bg);
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+  }
+  .vault-item strong { display: block; color: #0f172a; margin-bottom: 4px; font-size: 13px; }
+  .vault-item p { color: #475569; font-size: 12px; margin: 2px 0; }
+
+  /* Day Planner */
+  .day-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .day-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 10px;
+  }
+  .day-date { font-weight: 800; font-size: 16px; color: var(--primary); }
+  .day-stay { font-size: 12px; background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-weight: 600; }
+
+  /* Sections inside Day */
+  .section-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 8px; }
+  .flex-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 768px) { .flex-row { grid-template-columns: 1fr; } }
+
+  .picker-box {
+    background: #fafafa;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  select, input[type="text"] {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 13px;
+    background: #fff;
+    color: var(--text-main);
+    margin-top: 4px;
+    outline: none;
+  }
+  select:focus, input[type="text"]:focus { border-color: var(--primary); }
+
+  .meta-info {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #475569;
+    background: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #edf2f7;
+    min-height: 52px;
+  }
+  .transit-tag { display: inline-block; background: #fef3c7; color: #92400e; padding: 2px 6px; border-radius: 4px; font-weight: 600; font-size: 11px; margin-bottom: 4px; }
+  .proximity-tag { display: inline-block; background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 4px; font-weight: 600; font-size: 11px; margin-bottom: 4px; }
+
+  /* Export Button */
+  .btn-container { text-align: center; margin: 30px 0 20px; }
+  .export-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  .export-btn:hover { background: #9a3412; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Vietnam Trip Master Planner</h1>
+    <p>Bengaluru to Ho Chi Minh City, Ha Long Bay, Ninh Binh & Hanoi | Oct 16 to 26, 2026</p>
+  </header>
+
+  <!-- Locked Reservation Vault -->
+  <div class="vault-card">
+    <div class="vault-header">
+      <div class="vault-title">Locked Reservations Vault</div>
+      <span class="lock-badge">Confirmed & Fixed</span>
+    </div>
+    <div class="vault-grid">
+      <div class="vault-item">
+        <strong>Flight: Bengaluru to Ho Chi Minh</strong>
+        <p>VietJet VJ-1802 | Oct 16, 23:35 to Oct 17, 06:00</p>
+        <p>PNR: 57FT4P | ixigo: IF26082361872652</p>
+      </div>
+      <div class="vault-item">
+        <strong>Stay: Ho Chi Minh City</strong>
+        <p>KunKin Garden (Binh Thanh)</p>
+        <p>Check-in: Oct 17 | Check-out: Oct 19</p>
+        <p>Agoda ID: 2045486641</p>
+      </div>
+      <div class="vault-item">
+        <strong>Flight: Ho Chi Minh to Hanoi</strong>
+        <p>Trip.com domestic booking</p>
+        <p>Travel date: Monday, Oct 19, 2026</p>
+      </div>
+      <div class="vault-item">
+        <strong>Stay: Hanoi (Pre-Cruise)</strong>
+        <p>Luxe Paradise Premium Hotel Truc Bach</p>
+        <p>Check-in: Oct 19 | Check-out: Oct 20</p>
+        <p>Agoda ID: 2047502377</p>
+      </div>
+      <div class="vault-item">
+        <strong>Cruise: Lan Ha / Ha Long Bay</strong>
+        <p>Peony Cruises (1 Night)</p>
+        <p>Check-in: Oct 20 | Check-out: Oct 21</p>
+        <p>Booking.com ID: 6188896026</p>
+      </div>
+      <div class="vault-item">
+        <strong>Stay: Ha Long Bay</strong>
+        <p>Vinpearl Resort & Spa Ha Long (Reu Island)</p>
+        <p>Check-in: Oct 21 | Check-out: Oct 22</p>
+        <p>Agoda ID: 2050929990</p>
+      </div>
+      <div class="vault-item">
+        <strong>Stay: Ninh Binh (Tam Coc)</strong>
+        <p>Tam Coc Oasis Resort & Spa</p>
+        <p>Check-in: Oct 22 | Check-out: Oct 24</p>
+        <p>Agoda ID: 2050935290</p>
+      </div>
+      <div class="vault-item">
+        <strong>Stay: Hanoi (Post-Ninh Binh)</strong>
+        <p>Flower Garden Hotel (Ba Dinh)</p>
+        <p>Check-in: Oct 24 | Check-out: Oct 26</p>
+        <p>Agoda ID: 2050936765</p>
+      </div>
+      <div class="vault-item">
+        <strong>Flight: Hanoi to Bengaluru</strong>
+        <p>Air India AI 2391 / AI 2664 via DEL</p>
+        <p>Depart HAN: Oct 26, 08:00 | Arrive BLR: 18:10</p>
+        <p>PNR: 7LOEY4 | MMT: NN2AN4DV37536607310</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Day-by-Day Schedule -->
+  <div id="itinerary-list">
+
+    <!-- Day 1 -->
+    <div class="day-card">
+      <div class="day-top">
+        <span class="day-date">Day 1: Saturday, Oct 17, 2026</span>
+        <span class="day-stay">Stay: KunKin Garden, HCMC</span>
+      </div>
+      <div class="flex-row">
+        <div class="picker-box">
+          <div class="section-label">Afternoon Exploration Option</div>
+          <select id="act-day1" onchange="updateDetails('day1')">
+            <option value="d1-a">Central Post Office & Notre Dame Cathedral (15 min Grab)</option>
+            <option value="d1-b">Ben Thanh Market & Le Loi Promenade (20 min Grab)</option>
+            <option value="d1-c">Relaxation & Rooftop View at KunKin Garden</option>
+          </select>
+          <div class="meta-info" id="meta-act-day1">
+            <span class="transit-tag">15 to 20 min transit</span>
+            Easy stroll after early morning flight arrival at 06:00.
+          </div>
+        </div>
+        <div class="picker-box">
+          <div class="section-label">Non-Veg Food Choice</div>
+          <select id="food-day1" onchange="updateDetails('day1')">
+            <option value="f1-a">Banh Mi Huynh Hoa (Rich pate & cold cuts)</option>
+            <option value="f1-b">Com Tam Ba Ghien (Charcoal grilled pork chop broken rice)</option>
+            <option value="f1-c">Custom Choice</option>
+          </select>
+          <div class="meta-info" id="meta-food-day1">
+            <span class="proximity-tag">15 min Grab ride</span>
+            Famous hefty meat baguette; ideal quick first meal.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="day-card">
+      <div class="day-top">
+        <span class="day-date">Day 2: Sunday, Oct 18, 2026</span>
+        <span class="day-stay">Stay: KunKin Garden, HCMC</span>
+      </div>
+      <div class="flex-row">
+        <div class="picker-box">
+          <div class="section-label">Select Day Trip</div>
+          <select id="act-day2" onchange="updateDetails('day2')">
+            <option value="d2-a">Option A: Cu Chi Tunnels Historical Tour</option>
+            <option value="d2-b">Option B: Mekong Delta Day Cruise (Ben Tre)</option>
+            <option value="d2-c">Option C: City Heritage, Cho Lon & Street Food</option>
+          </select>
+          <div class="meta-info" id="meta-act-day2">
+            <span class="transit-tag">1 hr 45 min road / 1 hr 15 min speedboat</span>
+            Historic underground military bunker and tunnel complex.
+          </div>
+        </div>
+        <div class="picker-box">
+          <div class="section-label">Non-Veg Dinner Choice</div>
+          <select id="food-day2" onchange="updateDetails('day2')">
+            <option value="f2-a">Com Tam Ba Ghien (Signature grilled pork chops)</option>
+            <option value="f2-b">Quan An Ngon (Crispy seafood banh xeo & lemongrass skewers)</option>
+            <option value="f2-c">Custom Choice</option>
+          </select>
+          <div class="meta-info" id="meta-food-day2">
+            <span class="proximity-tag">20 min Grab from hotel</span>
+            Michelin Bib Gourmand broken rice with oversized charcoal-glazed pork.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="day-card">
+      <div class="day-top">
+        <span class="day-date">Day 3: Monday, Oct 19, 2026</span>
+        <span class="day-stay">Flight to Hanoi | Stay: Luxe Paradise, Truc Bach</span>
+      </div>
+      <div class="flex-row">
+        <div class="picker-box">
+          <div class="section-label">Evening Activity in Hanoi</div>
+          <select id="act-day3" onchange="updateDetails('day3')">
+            <option value="d3-a">Walk around Truc Bach Lake & Tran Quoc Pagoda (3 min walk)</option>
+            <option value="d3-b">Evening Cyclo ride through Hanoi Old Quarter (10 min Grab)</option>
+          </select>
+          <div class="meta-info" id="meta-act-day3">
+            <span class="transit-tag">Walking distance</span>
+            Tranquil lakeside walkways directly outside Luxe Paradise Hotel.
+          </div>
+        </div>
+        <div class="picker-box">
+          <div class="section-label">Non-Veg Dinner Choice</div>
+          <select id="food-day3" onchange="updateDetails('day3')">
+            <option value="f3-a">Pho Cuon Huong Mai, Truc Bach (Rolled beef pho & fried pho)</option>
+            <option value="f3-b">Cha Ca Thang Long (Turmeric fish with dill & peanuts)</option>
+            <option value="f3-c">Custom Choice</option>
+          </select>
+          <div class="meta-info" id="meta-food-day3">
+            <span class="proximity-tag">250 m walk from hotel</span>
+            Birthplace of Pho Cuon; tender sautéed beef rolled in fresh rice sheets.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 4 & 5 -->
+    <div class="day-card">
+      <div class="day-top">
+        <span class="day-date">Day 4 & 5: Oct 20 to 22, 2026</span>
+        <span class="day-stay">Stay: Peony Cruises & Vinpearl Resort Ha Long</span>
+      </div>
+      <div class="flex-row">
+        <div class="picker-box">
+          <div class="section-label">Bay Excursion Option</div>
+          <select id="act-day4" onchange="updateDetails('day4')">
+            <option value="d4-a">Viet Hai Village cycling on Cat Ba Island</option>
+            <option value="d4-b">Dark & Bright Cave kayak lagoon & bay swimming</option>
+          </select>
+          <div class="meta-info" id="meta-act-day4">
+            <span class="transit-tag">Direct ship launch</span>
+            Pedal through forested valley surrounded by limestone karsts.
+          </div>
+        </div>
+        <div class="picker-box">
+          <div class="section-label">Seafood & Dining Plan</div>
+          <select id="food-day4" onchange="updateDetails('day4')">
+            <option value="f4-a">Onboard Cruise Banquet (Steamed prawns & grilled fish)</option>
+            <option value="f4-b">Bai Chay coastal seafood street (Grilled oysters & mantis shrimp)</option>
+          </select>
+          <div class="meta-info" id="meta-food-day4">
+            <span class="proximity-tag">Included on cruise</span>
+            Fresh local catch paired with Vietnamese regional dishes.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 6 & 7 -->
+    <div class="day-card">
+      <div class="day-top">
+        <span class="day-date">Day 6 & 7: Oct 22 to 24, 2026</span>
+        <span class="day-stay">Stay: Tam Coc Oasis Resort & Spa, Ninh Binh</span>
+      </div>
+      <div class="flex-row">
+        <div class="picker-box">
+          <div class="section-label">Select Ninh Binh Excursion</div>
+          <select id="act-day6" onchange="updateDetails('day6')">
+            <option value="d6-a">Option A: Trang An scenic grotto sampan boat route</option>
+            <option value="d6-b">Option B: Hang Mua dragon peak climb + Tam Coc river</option>
+            <option value="d6-c">Option C: Hoa Lu ancient capital & Van Long wetland reserve</option>
+          </select>
+          <div class="meta-info" id="meta-act-day6">
+            <span class="transit-tag">15 min drive (9 km)</span>
+            Spectacular multi-cave waterway route through UNESCO karst towers.
+          </div>
+        </div>
+        <div class="picker-box">
+          <div class="section-label">Mountain Specialty Dining</div>
+          <select id="food-day6" onchange="updateDetails('day6')">
+            <option value="f6-a">Nha Hang Thang Long (Lime-marinated mountain goat & crispy com chay)</option>
+            <option value="f6-b">Tam Coc Village Bistro (Charcoal grilled lemongrass goat ribs)</option>
+            <option value="f6-c">Custom Choice</option>
+          </select>
+          <div class="meta-info" id="meta-food-day6">
+            <span class="proximity-tag">10 min drive from Trang An</span>
+            Renowned local spot for genuine mountain goat and crispy rice crust.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 8 & 9 -->
+    <div class="day-card">
+      <div class="day-top">
+        <span class="day-date">Day 8 & 9: Oct 24 to 26, 2026</span>
+        <span class="day-stay">Stay: Flower Garden Hotel, Hanoi</span>
+      </div>
+      <div class="flex-row">
+        <div class="picker-box">
+          <div class="section-label">Select Hanoi Day Excursion</div>
+          <select id="act-day8" onchange="updateDetails('day8')">
+            <option value="d8-a">Option A: Quang Phu Cau Incense Village excursion</option>
+            <option value="d8-b">Option B: Temple of Literature, French Quarter & Lake walk</option>
+            <option value="d8-c">Option C: Old Quarter street culinary walk & Water Puppets</option>
+          </select>
+          <div class="meta-info" id="meta-act-day8">
+            <span class="transit-tag">1 hr 15 min drive (35 km)</span>
+            Vibrant craft village famous for sea of scarlet drying incense sticks.
+          </div>
+        </div>
+        <div class="picker-box">
+          <div class="section-label">Non-Veg Food Highlights</div>
+          <select id="food-day8" onchange="updateDetails('day8')">
+            <option value="f8-a">Bun Cha Huong Lien (Obama bun cha - smoky pork & crab rolls)</option>
+            <option value="f8-b">Cha Ca Thang Long (Turmeric sizzling catfish)</option>
+            <option value="f8-c">Pho Gia Truyen Bat Dan (Traditional beef pho bo)</option>
+            <option value="f8-d">Custom Choice</option>
+          </select>
+          <div class="meta-info" id="meta-food-day8">
+            <span class="proximity-tag">12 min Grab ride (3.8 km)</span>
+            Smoky charcoal grilled pork patties in sweet-sour fish sauce broth.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="btn-container">
+    <button class="export-btn" onclick="printPlan()">Print or Save as PDF</button>
+  </div>
+</div>
+
+<script>
+  const metaLookup = {
+    'd1-a': ['15 min Grab ride', 'Historic French colonial cathedral and heritage post office.'],
+    'd1-b': ['20 min Grab ride', 'Bustling covered market filled with local snacks and crafts.'],
+    'd1-c': ['0 min', 'Unwind and take in district views from the garden hotel.'],
+    'f1-a': ['15 min Grab ride', 'Famous hefty meat baguette; layered cold cuts and creamy pate.'],
+    'f1-b': ['20 min Grab ride', 'Michelin Bib Gourmand broken rice with giant grilled pork chops.'],
+    'f1-c': ['Custom', 'Enter your preferred dining spot.'],
+
+    'd2-a': ['1 hr 45 min by car / 1 hr 15 min boat', 'Underground wartime network, booby traps and preserved forest bunkers.'],
+    'd2-b': ['2 hrs 15 min by road (85 km)', 'Palm-lined canal sampan ride and regional fruit orchards.'],
+    'd2-c': ['15 min Grab ride', 'Chinatown pagodas, herbalist streets, and local bustling markets.'],
+    'f2-a': ['20 min Grab ride', 'Famous broken rice plate with scallion oil and meatloaf.'],
+    'f2-b': ['10 min Grab ride', 'Colonial villa setting serving authentic pan-Vietnamese specialties.'],
+    'f2-c': ['Custom', 'Enter your preferred dining spot.'],
+
+    'd3-a': ['Walking distance (3 min)', 'Sunset walk along Truc Bach Lake and Tran Quoc Pagoda on West Lake.'],
+    'd3-b': ['10 min Grab ride', 'Pedal-powered cyclo exploration through the 36 guild streets.'],
+    'f3-a': ['250 m walk from hotel', 'Truc Bach specialty: warm beef wrapped in silky rice sheets.'],
+    'f3-b': ['7 min Grab ride (1.8 km)', 'Catfish cooked in hot oil with fragrant fresh dill and peanuts.'],
+    'f3-c': ['Custom', 'Enter your preferred dining spot.'],
+
+    'd4-a': ['Ship tender launch', 'Village path surrounded by limestone walls inside Cat Ba National Park.'],
+    'd4-b': ['Direct kayak access', 'Tidal cave entrance leading into an enclosed emerald lagoon.'],
+    'f4-a': ['Included on board', 'Multi-course banquet with tiger prawns, squid, and seared fish.'],
+    'f4-b': ['10 min boat + ride', 'Bustling coastal avenue with live tanks and grilled garlic oysters.'],
+
+    'd6-a': ['15 min drive (9 km)', 'Rowed sampan journey through three cave grottos and mountain temples.'],
+    'd6-b': ['8 min drive (4 km)', 'Climb 500 stone steps to the jagged ridge overlooking Tam Coc river.'],
+    'd6-c': ['25 min drive (18 km)', 'Ancient 10th-century temples followed by calm reed-bed wetland boats.'],
+    'f6-a': ['10 min from Trang An', 'Specialty mountain goat with aromatic herbs and savory dipping sauce.'],
+    'f6-b': ['500 m walk from resort', 'Local grilled meats and roasted pork skewers near Tam Coc pier.'],
+    'f6-c': ['Custom', 'Enter your preferred dining spot.'],
+
+    'd8-a': ['1 hr 15 min drive (35 km)', 'Photogenic courtyard workshops filled with drying scarlet incense.'],
+    'd8-b': ['10 min Grab ride', '11th-century scholars temple, shaded courtyards and French Quarter.'],
+    'd8-c': ['5 to 10 min walk', 'Explore street eateries, rail cafe alleyways and puppet theatre.'],
+    'f8-a': ['12 min Grab ride (3.8 km)', 'Charcoal grilled pork in tangy warm broth with fresh herbs.'],
+    'f8-b': ['7 min Grab ride (1.8 km)', 'Old Quarter turmeric fish skillet with fried rice noodles.'],
+    'f8-c': ['10 min walk (1.2 km)', 'Historic clear bone-broth beef pho in the heart of Old Quarter.'],
+    'f8-d': ['Custom', 'Enter your preferred dining spot.']
+  };
+
+  function updateDetails(day) {
+    const actVal = document.getElementById('act-' + day)?.value;
+    const foodVal = document.getElementById('food-' + day)?.value;
+
+    if (actVal && metaLookup[actVal]) {
+      const [trans, desc] = metaLookup[actVal];
+      document.getElementById('meta-act-' + day).innerHTML = 
+        `<span class="transit-tag">${trans}</span> ${desc}`;
+    }
+
+    if (foodVal && metaLookup[foodVal]) {
+      const [prox, desc] = metaLookup[foodVal];
+      document.getElementById('meta-food-' + day).innerHTML = 
+        `<span class="proximity-tag">${prox}</span> ${desc}`;
+    }
+  }
+
+  function printPlan() {
+    window.print();
+  }
+</script>
+</body>
+</html>
