@@ -7,6 +7,7 @@
 <style>
   :root {
     --primary: #c2410c;
+    --primary-hover: #9a3412;
     --primary-light: #ffedd5;
     --dark: #0f172a;
     --gray-bg: #f8fafc;
@@ -63,9 +64,9 @@
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
   .day-top {
     display: flex;
@@ -73,17 +74,21 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     border-bottom: 1px dashed var(--border);
-    padding-bottom: 10px;
+    padding-bottom: 12px;
   }
-  .day-date { font-weight: 800; font-size: 16px; color: var(--primary); }
+  .day-date { font-weight: 800; font-size: 17px; color: var(--primary); }
   .day-stay { font-size: 12px; background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-weight: 600; }
 
-  /* Sections inside Day */
-  .section-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 8px; }
-  .flex-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 768px) { .flex-row { grid-template-columns: 1fr; } }
+  /* Selectors Grid */
+  .selector-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 768px) { .selector-grid { grid-template-columns: 1fr; } }
 
   .picker-box {
     background: #fafafa;
@@ -91,7 +96,8 @@
     border-radius: 8px;
     padding: 14px;
   }
-  select, input[type="text"] {
+  .section-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 8px; }
+  select {
     width: 100%;
     padding: 9px 12px;
     border: 1px solid #cbd5e1;
@@ -99,23 +105,97 @@
     font-size: 13px;
     background: #fff;
     color: var(--text-main);
-    margin-top: 4px;
     outline: none;
+    font-weight: 600;
   }
-  select:focus, input[type="text"]:focus { border-color: var(--primary); }
+  select:focus { border-color: var(--primary); }
 
-  .meta-info {
-    margin-top: 10px;
-    font-size: 12px;
-    color: #475569;
-    background: #fff;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #edf2f7;
-    min-height: 52px;
+  /* Circuit & Spots Visual Display */
+  .display-section {
+    margin-top: 16px;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 16px;
   }
-  .transit-tag { display: inline-block; background: #fef3c7; color: #92400e; padding: 2px 6px; border-radius: 4px; font-weight: 600; font-size: 11px; margin-bottom: 4px; }
-  .proximity-tag { display: inline-block; background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 4px; font-weight: 600; font-size: 11px; margin-bottom: 4px; }
+  .display-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .spots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .spot-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .spot-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background: #f1f5f9;
+  }
+  .spot-body {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  .spot-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 4px;
+  }
+  .spot-tag {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .tag-transit { background: #fef3c7; color: #92400e; }
+  .tag-food { background: #dcfce7; color: #166534; }
+  .spot-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  /* Single Eatery Card */
+  .eatery-container {
+    margin-top: 16px;
+  }
+  .eatery-card {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+  }
+  @media (max-width: 640px) { .eatery-card { grid-template-columns: 1fr; } }
+  .eatery-img {
+    width: 100%;
+    height: 100%;
+    min-height: 160px;
+    object-fit: cover;
+    background: #f1f5f9;
+  }
+  .eatery-body {
+    padding: 14px 16px;
+  }
 
   /* Export Button */
   .btn-container { text-align: center; margin: 30px 0 20px; }
@@ -130,7 +210,7 @@
     cursor: pointer;
     transition: 0.2s ease;
   }
-  .export-btn:hover { background: #9a3412; }
+  .export-btn:hover { background: var(--primary-hover); }
 </style>
 </head>
 <body>
@@ -207,277 +287,641 @@
   <div id="itinerary-list">
 
     <!-- Day 1 -->
-    <div class="day-card">
+    <div class="day-card" id="card-day1">
       <div class="day-top">
         <span class="day-date">Day 1: Saturday, Oct 17, 2026</span>
         <span class="day-stay">Stay: KunKin Garden, HCMC</span>
       </div>
-      <div class="flex-row">
+      <div class="selector-grid">
         <div class="picker-box">
-          <div class="section-label">Afternoon Exploration Option</div>
-          <select id="act-day1" onchange="updateDetails('day1')">
-            <option value="d1-a">Central Post Office & Notre Dame Cathedral (15 min Grab)</option>
-            <option value="d1-b">Ben Thanh Market & Le Loi Promenade (20 min Grab)</option>
-            <option value="d1-c">Relaxation & Rooftop View at KunKin Garden</option>
+          <div class="section-label">Select Afternoon Sightseeing Circuit</div>
+          <select id="sel-act-day1" onchange="renderDay('day1')">
+            <option value="d1_c1">Circuit 1: French Colonial Heritage Circuit</option>
+            <option value="d1_c2">Circuit 2: Markets & Walking Street Circuit</option>
           </select>
-          <div class="meta-info" id="meta-act-day1">
-            <span class="transit-tag">15 to 20 min transit</span>
-            Easy stroll after early morning flight arrival at 06:00.
-          </div>
         </div>
         <div class="picker-box">
-          <div class="section-label">Non-Veg Food Choice</div>
-          <select id="food-day1" onchange="updateDetails('day1')">
-            <option value="f1-a">Banh Mi Huynh Hoa (Rich pate & cold cuts)</option>
-            <option value="f1-b">Com Tam Ba Ghien (Charcoal grilled pork chop broken rice)</option>
-            <option value="f1-c">Custom Choice</option>
+          <div class="section-label">Select Non-Veg Dining Spot</div>
+          <select id="sel-food-day1" onchange="renderDay('day1')">
+            <option value="f_banhmi">Bánh Mì Huỳnh Hoa (Rich Pâté & Charcuterie Baguette)</option>
+            <option value="f_comtam">Cơm Tấm Ba Ghiền (Michelin Bib Broken Rice & Pork Chop)</option>
           </select>
-          <div class="meta-info" id="meta-food-day1">
-            <span class="proximity-tag">15 min Grab ride</span>
-            Famous hefty meat baguette; ideal quick first meal.
-          </div>
         </div>
+      </div>
+      <div class="display-section">
+        <div class="display-title">Sightseeing Circuit Locations</div>
+        <div class="spots-grid" id="spots-day1"></div>
+      </div>
+      <div class="display-section eatery-container">
+        <div class="display-title">Chosen Eatery Detail</div>
+        <div id="food-detail-day1"></div>
       </div>
     </div>
 
     <!-- Day 2 -->
-    <div class="day-card">
+    <div class="day-card" id="card-day2">
       <div class="day-top">
         <span class="day-date">Day 2: Sunday, Oct 18, 2026</span>
         <span class="day-stay">Stay: KunKin Garden, HCMC</span>
       </div>
-      <div class="flex-row">
+      <div class="selector-grid">
         <div class="picker-box">
-          <div class="section-label">Select Day Trip</div>
-          <select id="act-day2" onchange="updateDetails('day2')">
-            <option value="d2-a">Option A: Cu Chi Tunnels Historical Tour</option>
-            <option value="d2-b">Option B: Mekong Delta Day Cruise (Ben Tre)</option>
-            <option value="d2-c">Option C: City Heritage, Cho Lon & Street Food</option>
+          <div class="section-label">Select Full-Day Excursion Circuit</div>
+          <select id="sel-act-day2" onchange="renderDay('day2')">
+            <option value="d2_c1">Option A: Wartime Underground Circuit (Củ Chi & War History)</option>
+            <option value="d2_c2">Option B: Mekong Delta River & Island Canal Circuit</option>
+            <option value="d2_c3">Option C: Chợ Lớn Chinatown & Temple Circuit</option>
           </select>
-          <div class="meta-info" id="meta-act-day2">
-            <span class="transit-tag">1 hr 45 min road / 1 hr 15 min speedboat</span>
-            Historic underground military bunker and tunnel complex.
-          </div>
         </div>
         <div class="picker-box">
-          <div class="section-label">Non-Veg Dinner Choice</div>
-          <select id="food-day2" onchange="updateDetails('day2')">
-            <option value="f2-a">Com Tam Ba Ghien (Signature grilled pork chops)</option>
-            <option value="f2-b">Quan An Ngon (Crispy seafood banh xeo & lemongrass skewers)</option>
-            <option value="f2-c">Custom Choice</option>
+          <div class="section-label">Select Non-Veg Dining Spot</div>
+          <select id="sel-food-day2" onchange="renderDay('day2')">
+            <option value="f_quananngon">Quán Ăn Ngon (Villa Courtyard Vietnamese Specialties)</option>
+            <option value="f_comtam">Cơm Tấm Ba Ghiền (Giant Charcoal Grilled Pork Chops)</option>
           </select>
-          <div class="meta-info" id="meta-food-day2">
-            <span class="proximity-tag">20 min Grab from hotel</span>
-            Michelin Bib Gourmand broken rice with oversized charcoal-glazed pork.
-          </div>
         </div>
+      </div>
+      <div class="display-section">
+        <div class="display-title">Day Trip Stops & Circuit Itinerary</div>
+        <div class="spots-grid" id="spots-day2"></div>
+      </div>
+      <div class="display-section eatery-container">
+        <div class="display-title">Chosen Eatery Detail</div>
+        <div id="food-detail-day2"></div>
       </div>
     </div>
 
     <!-- Day 3 -->
-    <div class="day-card">
+    <div class="day-card" id="card-day3">
       <div class="day-top">
         <span class="day-date">Day 3: Monday, Oct 19, 2026</span>
-        <span class="day-stay">Flight to Hanoi | Stay: Luxe Paradise, Truc Bach</span>
+        <span class="day-stay">Domestic Flight SGN → HAN | Stay: Luxe Paradise, Trúc Bạch</span>
       </div>
-      <div class="flex-row">
+      <div class="selector-grid">
         <div class="picker-box">
-          <div class="section-label">Evening Activity in Hanoi</div>
-          <select id="act-day3" onchange="updateDetails('day3')">
-            <option value="d3-a">Walk around Truc Bach Lake & Tran Quoc Pagoda (3 min walk)</option>
-            <option value="d3-b">Evening Cyclo ride through Hanoi Old Quarter (10 min Grab)</option>
+          <div class="section-label">Select Evening Hanoi Circuit</div>
+          <select id="sel-act-day3" onchange="renderDay('day3')">
+            <option value="d3_c1">Circuit 1: Trúc Bạch Lake Promenade & Ancient Pagoda</option>
+            <option value="d3_c2">Circuit 2: Old Quarter Guild Streets & Night Market</option>
           </select>
-          <div class="meta-info" id="meta-act-day3">
-            <span class="transit-tag">Walking distance</span>
-            Tranquil lakeside walkways directly outside Luxe Paradise Hotel.
-          </div>
         </div>
         <div class="picker-box">
-          <div class="section-label">Non-Veg Dinner Choice</div>
-          <select id="food-day3" onchange="updateDetails('day3')">
-            <option value="f3-a">Pho Cuon Huong Mai, Truc Bach (Rolled beef pho & fried pho)</option>
-            <option value="f3-b">Cha Ca Thang Long (Turmeric fish with dill & peanuts)</option>
-            <option value="f3-c">Custom Choice</option>
+          <div class="section-label">Select Non-Veg Dining Spot</div>
+          <select id="sel-food-day3" onchange="renderDay('day3')">
+            <option value="f_phocuon">Phở Cuốn Hương Mai (Beef Rolled Pho - 250m Walk from Hotel)</option>
+            <option value="f_chaca">Chả Cá Thăng Long (Sizzling Turmeric Catfish & Dill)</option>
           </select>
-          <div class="meta-info" id="meta-food-day3">
-            <span class="proximity-tag">250 m walk from hotel</span>
-            Birthplace of Pho Cuon; tender sautéed beef rolled in fresh rice sheets.
-          </div>
         </div>
+      </div>
+      <div class="display-section">
+        <div class="display-title">Evening Circuit Stops</div>
+        <div class="spots-grid" id="spots-day3"></div>
+      </div>
+      <div class="display-section eatery-container">
+        <div class="display-title">Chosen Eatery Detail</div>
+        <div id="food-detail-day3"></div>
       </div>
     </div>
 
     <!-- Day 4 & 5 -->
-    <div class="day-card">
+    <div class="day-card" id="card-day4">
       <div class="day-top">
-        <span class="day-date">Day 4 & 5: Oct 20 to 22, 2026</span>
+        <span class="day-date">Days 4 & 5: Oct 20 to 22, 2026</span>
         <span class="day-stay">Stay: Peony Cruises & Vinpearl Resort Ha Long</span>
       </div>
-      <div class="flex-row">
+      <div class="selector-grid">
         <div class="picker-box">
-          <div class="section-label">Bay Excursion Option</div>
-          <select id="act-day4" onchange="updateDetails('day4')">
-            <option value="d4-a">Viet Hai Village cycling on Cat Ba Island</option>
-            <option value="d4-b">Dark & Bright Cave kayak lagoon & bay swimming</option>
+          <div class="section-label">Select Bay Excursion Circuit</div>
+          <select id="sel-act-day4" onchange="renderDay('day4')">
+            <option value="d4_c1">Option A: Cát Bà Island Rainforest & Village Cycling</option>
+            <option value="d4_c2">Option B: Lagoon Grottos & Water Kayaking Circuit</option>
           </select>
-          <div class="meta-info" id="meta-act-day4">
-            <span class="transit-tag">Direct ship launch</span>
-            Pedal through forested valley surrounded by limestone karsts.
-          </div>
         </div>
         <div class="picker-box">
-          <div class="section-label">Seafood & Dining Plan</div>
-          <select id="food-day4" onchange="updateDetails('day4')">
-            <option value="f4-a">Onboard Cruise Banquet (Steamed prawns & grilled fish)</option>
-            <option value="f4-b">Bai Chay coastal seafood street (Grilled oysters & mantis shrimp)</option>
+          <div class="section-label">Select Seafood Dining Plan</div>
+          <select id="sel-food-day4" onchange="renderDay('day4')">
+            <option value="f_cruise">Peony Cruises Fine Dining Banquet (Fresh Gulf Seafood)</option>
+            <option value="f_baichay">Bãi Cháy Coastal Seafood Promenade (Live Tanks & Grills)</option>
           </select>
-          <div class="meta-info" id="meta-food-day4">
-            <span class="proximity-tag">Included on cruise</span>
-            Fresh local catch paired with Vietnamese regional dishes.
-          </div>
         </div>
+      </div>
+      <div class="display-section">
+        <div class="display-title">Bay Activity Highlights</div>
+        <div class="spots-grid" id="spots-day4"></div>
+      </div>
+      <div class="display-section eatery-container">
+        <div class="display-title">Chosen Dining Experience</div>
+        <div id="food-detail-day4"></div>
       </div>
     </div>
 
     <!-- Day 6 & 7 -->
-    <div class="day-card">
+    <div class="day-card" id="card-day6">
       <div class="day-top">
-        <span class="day-date">Day 6 & 7: Oct 22 to 24, 2026</span>
-        <span class="day-stay">Stay: Tam Coc Oasis Resort & Spa, Ninh Binh</span>
+        <span class="day-date">Days 6 & 7: Oct 22 to 24, 2026</span>
+        <span class="day-stay">Stay: Tam Coc Oasis Resort & Spa, Ninh Bình</span>
       </div>
-      <div class="flex-row">
+      <div class="selector-grid">
         <div class="picker-box">
-          <div class="section-label">Select Ninh Binh Excursion</div>
-          <select id="act-day6" onchange="updateDetails('day6')">
-            <option value="d6-a">Option A: Trang An scenic grotto sampan boat route</option>
-            <option value="d6-b">Option B: Hang Mua dragon peak climb + Tam Coc river</option>
-            <option value="d6-c">Option C: Hoa Lu ancient capital & Van Long wetland reserve</option>
+          <div class="section-label">Select Ninh Bình Excursion Circuit</div>
+          <select id="sel-act-day6" onchange="renderDay('day6')">
+            <option value="d6_c1">Option A: Tràng An UNESCO Waterways & Grotto Circuit</option>
+            <option value="d6_c2">Option B: Tam Cốc River & Hang Múa Panoramic Ridge</option>
+            <option value="d6_c3">Option C: Ancient Dynastic Capital & Wild Wetlands</option>
           </select>
-          <div class="meta-info" id="meta-act-day6">
-            <span class="transit-tag">15 min drive (9 km)</span>
-            Spectacular multi-cave waterway route through UNESCO karst towers.
-          </div>
         </div>
         <div class="picker-box">
-          <div class="section-label">Mountain Specialty Dining</div>
-          <select id="food-day6" onchange="updateDetails('day6')">
-            <option value="f6-a">Nha Hang Thang Long (Lime-marinated mountain goat & crispy com chay)</option>
-            <option value="f6-b">Tam Coc Village Bistro (Charcoal grilled lemongrass goat ribs)</option>
-            <option value="f6-c">Custom Choice</option>
+          <div class="section-label">Select Mountain Specialty Dining</div>
+          <select id="sel-food-day6" onchange="renderDay('day6')">
+            <option value="f_denui">Nhà Hàng Thăng Long (Famous Dê Núi Mountain Goat & Cơm Cháy)</option>
+            <option value="f_tamcocbistro">Tam Cốc Village Local Bistros (Lemongrass Pork Skewers & Duck)</option>
           </select>
-          <div class="meta-info" id="meta-food-day6">
-            <span class="proximity-tag">10 min drive from Trang An</span>
-            Renowned local spot for genuine mountain goat and crispy rice crust.
-          </div>
         </div>
+      </div>
+      <div class="display-section">
+        <div class="display-title">Ninh Bình Circuit Locations</div>
+        <div class="spots-grid" id="spots-day6"></div>
+      </div>
+      <div class="display-section eatery-container">
+        <div class="display-title">Chosen Mountain Dining Detail</div>
+        <div id="food-detail-day6"></div>
       </div>
     </div>
 
     <!-- Day 8 & 9 -->
-    <div class="day-card">
+    <div class="day-card" id="card-day8">
       <div class="day-top">
-        <span class="day-date">Day 8 & 9: Oct 24 to 26, 2026</span>
+        <span class="day-date">Days 8 & 9: Oct 24 to 26, 2026</span>
         <span class="day-stay">Stay: Flower Garden Hotel, Hanoi</span>
       </div>
-      <div class="flex-row">
+      <div class="selector-grid">
         <div class="picker-box">
-          <div class="section-label">Select Hanoi Day Excursion</div>
-          <select id="act-day8" onchange="updateDetails('day8')">
-            <option value="d8-a">Option A: Quang Phu Cau Incense Village excursion</option>
-            <option value="d8-b">Option B: Temple of Literature, French Quarter & Lake walk</option>
-            <option value="d8-c">Option C: Old Quarter street culinary walk & Water Puppets</option>
+          <div class="section-label">Select Hanoi Day Excursion Circuit</div>
+          <select id="sel-act-day8" onchange="renderDay('day8')">
+            <option value="d8_c1">Option A: Traditional Craft & Incense Village Excursion</option>
+            <option value="d8_c2">Option B: Imperial Citadel, Literature Temple & Lake Circuit</option>
+            <option value="d8_c3">Option C: Old Quarter Street Food Safari & Train Street</option>
           </select>
-          <div class="meta-info" id="meta-act-day8">
-            <span class="transit-tag">1 hr 15 min drive (35 km)</span>
-            Vibrant craft village famous for sea of scarlet drying incense sticks.
-          </div>
         </div>
         <div class="picker-box">
-          <div class="section-label">Non-Veg Food Highlights</div>
-          <select id="food-day8" onchange="updateDetails('day8')">
-            <option value="f8-a">Bun Cha Huong Lien (Obama bun cha - smoky pork & crab rolls)</option>
-            <option value="f8-b">Cha Ca Thang Long (Turmeric sizzling catfish)</option>
-            <option value="f8-c">Pho Gia Truyen Bat Dan (Traditional beef pho bo)</option>
-            <option value="f8-d">Custom Choice</option>
+          <div class="section-label">Select Non-Veg Dining Spot</div>
+          <select id="sel-food-day8" onchange="renderDay('day8')">
+            <option value="f_buncha">Bún Chả Hương Liên (Obama Bún Chả & Crab Spring Rolls)</option>
+            <option value="f_chaca">Chả Cá Thăng Long (Turmeric Catfish Tableside Sizzle)</option>
+            <option value="f_phogiadinh">Phở Gia Truyền Bát Đàn (Historic Slow-Simmered Beef Phở Bò)</option>
           </select>
-          <div class="meta-info" id="meta-food-day8">
-            <span class="proximity-tag">12 min Grab ride (3.8 km)</span>
-            Smoky charcoal grilled pork patties in sweet-sour fish sauce broth.
-          </div>
         </div>
+      </div>
+      <div class="display-section">
+        <div class="display-title">Hanoi Circuit Locations</div>
+        <div class="spots-grid" id="spots-day8"></div>
+      </div>
+      <div class="display-section eatery-container">
+        <div class="display-title">Chosen Eatery Detail</div>
+        <div id="food-detail-day8"></div>
       </div>
     </div>
 
   </div>
 
   <div class="btn-container">
-    <button class="export-btn" onclick="printPlan()">Print or Save as PDF</button>
+    <button class="export-btn" onclick="window.print()">Print or Save as PDF</button>
   </div>
 </div>
 
 <script>
-  const metaLookup = {
-    'd1-a': ['15 min Grab ride', 'Historic French colonial cathedral and heritage post office.'],
-    'd1-b': ['20 min Grab ride', 'Bustling covered market filled with local snacks and crafts.'],
-    'd1-c': ['0 min', 'Unwind and take in district views from the garden hotel.'],
-    'f1-a': ['15 min Grab ride', 'Famous hefty meat baguette; layered cold cuts and creamy pate.'],
-    'f1-b': ['20 min Grab ride', 'Michelin Bib Gourmand broken rice with giant grilled pork chops.'],
-    'f1-c': ['Custom', 'Enter your preferred dining spot.'],
-
-    'd2-a': ['1 hr 45 min by car / 1 hr 15 min boat', 'Underground wartime network, booby traps and preserved forest bunkers.'],
-    'd2-b': ['2 hrs 15 min by road (85 km)', 'Palm-lined canal sampan ride and regional fruit orchards.'],
-    'd2-c': ['15 min Grab ride', 'Chinatown pagodas, herbalist streets, and local bustling markets.'],
-    'f2-a': ['20 min Grab ride', 'Famous broken rice plate with scallion oil and meatloaf.'],
-    'f2-b': ['10 min Grab ride', 'Colonial villa setting serving authentic pan-Vietnamese specialties.'],
-    'f2-c': ['Custom', 'Enter your preferred dining spot.'],
-
-    'd3-a': ['Walking distance (3 min)', 'Sunset walk along Truc Bach Lake and Tran Quoc Pagoda on West Lake.'],
-    'd3-b': ['10 min Grab ride', 'Pedal-powered cyclo exploration through the 36 guild streets.'],
-    'f3-a': ['250 m walk from hotel', 'Truc Bach specialty: warm beef wrapped in silky rice sheets.'],
-    'f3-b': ['7 min Grab ride (1.8 km)', 'Catfish cooked in hot oil with fragrant fresh dill and peanuts.'],
-    'f3-c': ['Custom', 'Enter your preferred dining spot.'],
-
-    'd4-a': ['Ship tender launch', 'Village path surrounded by limestone walls inside Cat Ba National Park.'],
-    'd4-b': ['Direct kayak access', 'Tidal cave entrance leading into an enclosed emerald lagoon.'],
-    'f4-a': ['Included on board', 'Multi-course banquet with tiger prawns, squid, and seared fish.'],
-    'f4-b': ['10 min boat + ride', 'Bustling coastal avenue with live tanks and grilled garlic oysters.'],
-
-    'd6-a': ['15 min drive (9 km)', 'Rowed sampan journey through three cave grottos and mountain temples.'],
-    'd6-b': ['8 min drive (4 km)', 'Climb 500 stone steps to the jagged ridge overlooking Tam Coc river.'],
-    'd6-c': ['25 min drive (18 km)', 'Ancient 10th-century temples followed by calm reed-bed wetland boats.'],
-    'f6-a': ['10 min from Trang An', 'Specialty mountain goat with aromatic herbs and savory dipping sauce.'],
-    'f6-b': ['500 m walk from resort', 'Local grilled meats and roasted pork skewers near Tam Coc pier.'],
-    'f6-c': ['Custom', 'Enter your preferred dining spot.'],
-
-    'd8-a': ['1 hr 15 min drive (35 km)', 'Photogenic courtyard workshops filled with drying scarlet incense.'],
-    'd8-b': ['10 min Grab ride', '11th-century scholars temple, shaded courtyards and French Quarter.'],
-    'd8-c': ['5 to 10 min walk', 'Explore street eateries, rail cafe alleyways and puppet theatre.'],
-    'f8-a': ['12 min Grab ride (3.8 km)', 'Charcoal grilled pork in tangy warm broth with fresh herbs.'],
-    'f8-b': ['7 min Grab ride (1.8 km)', 'Old Quarter turmeric fish skillet with fried rice noodles.'],
-    'f8-c': ['10 min walk (1.2 km)', 'Historic clear bone-broth beef pho in the heart of Old Quarter.'],
-    'f8-d': ['Custom', 'Enter your preferred dining spot.']
-  };
-
-  function updateDetails(day) {
-    const actVal = document.getElementById('act-' + day)?.value;
-    const foodVal = document.getElementById('food-' + day)?.value;
-
-    if (actVal && metaLookup[actVal]) {
-      const [trans, desc] = metaLookup[actVal];
-      document.getElementById('meta-act-' + day).innerHTML = 
-        `<span class="transit-tag">${trans}</span> ${desc}`;
+const circuits = {
+  // Day 1
+  d1_c1: [
+    {
+      name: "Saigon Central Post Office",
+      tag: "15 min Grab from KunKin Garden",
+      desc: "Designed with classic Gustave Eiffel arches, colonial tiled floors, historic map murals, and vintage telephone booths.",
+      img: "https://images.unsplash.com/photo-1583417319070-4a69db38a482?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Notre Dame Cathedral Basilica",
+      tag: "2 min walk across square",
+      desc: "Historic 19th-century French red-brick cathedral framed by Paris Square and surrounding colonial gardens.",
+      img: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Nguyen Van Binh Book Street",
+      tag: "2 min walk",
+      desc: "Shaded pedestrian promenade lined with open-air book stalls, wooden benches, and boutique coffee stands.",
+      img: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80"
     }
-
-    if (foodVal && metaLookup[foodVal]) {
-      const [prox, desc] = metaLookup[foodVal];
-      document.getElementById('meta-food-' + day).innerHTML = 
-        `<span class="proximity-tag">${prox}</span> ${desc}`;
+  ],
+  d1_c2: [
+    {
+      name: "Ben Thanh Market",
+      tag: "20 min Grab from hotel",
+      desc: "Saigon's historic landmark market with soaring clock tower facade, crowded textile aisles, and rich coffee vendors.",
+      img: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Nguyen Hue Walking Street",
+      tag: "10 min walk",
+      desc: "Wide boulevard leading toward the French colonial City Hall, vibrant in the afternoon with local life.",
+      img: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "The Cafe Apartments (42 Nguyen Hue)",
+      tag: "5 min walk",
+      desc: "Famous 9-storey 1960s residential block transformed into stacked independent hipster coffee shops and boutiques.",
+      img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80"
     }
-  }
+  ],
 
-  function printPlan() {
-    window.print();
+  // Day 2
+  d2_c1: [
+    {
+      name: "Củ Chi Tunnels (Ben Dinh)",
+      tag: "1 hr 45 min road / 1 hr 15 min speedboat",
+      desc: "Vast underground defensive network with preserved command bunkers, concealed trapdoors, and jungle trails.",
+      img: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "War Remnants Museum",
+      tag: "District 3 (Return trip)",
+      desc: "Courtyard display of Hueys, fighter jets, and tanks paired with profound historical photographic archives.",
+      img: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Independence Palace (Reunification)",
+      tag: "7 min walk from museum",
+      desc: "Iconic modernist palace with intact 1970s presidential state rooms, telecommunications rooms, and basement bunkers.",
+      img: "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+  d2_c2: [
+    {
+      name: "Vĩnh Tràng Pagoda (Mỹ Tho)",
+      tag: "1 hr 45 min drive",
+      desc: "Architectural masterpiece blending European Renaissance arches with traditional pagoda roofs and towering Buddhas.",
+      img: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Bến Tre Waterway Canals",
+      tag: "20 min boat launch",
+      desc: "Hand-rowed wooden sampans floating down quiet, emerald canals completely shaded under arched water-coconut palms.",
+      img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Island Honey & Coconut Workshops",
+      tag: "15 min boat",
+      desc: "Watch local confections stirred in copper vats, sample fresh pomelo and dragonfruit, and listen to traditional folk music.",
+      img: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+  d2_c3: [
+    {
+      name: "Bà Thiên Hậu Temple (Chợ Lớn)",
+      tag: "25 min Grab from hotel",
+      desc: "Aromatic 18th-century Cantonese sea goddess temple filled with giant burning incense coils suspended from high roofs.",
+      img: "https://images.unsplash.com/photo-1598890777032-bde13fbe3492?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Bình Tây Wholesale Market",
+      tag: "8 min walk",
+      desc: "Palatial central market designed with Chinese dragon motifs and clock towers, bustling with spice merchants.",
+      img: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Hào Sĩ Phường Heritage Alley",
+      tag: "10 min walk",
+      desc: "Quiet residential courtyard flanked by two-tier pastel wooden shophouses built by Cantonese immigrants over a century ago.",
+      img: "https://images.unsplash.com/photo-1508807526345-15e9b5f4eaff?auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+
+  // Day 3
+  d3_c1: [
+    {
+      name: "Trúc Bạch Lake Promenade",
+      tag: "Right outside Luxe Paradise Hotel",
+      desc: "Calm, leafy pedestrian promenade along the lake shore, famous for tranquil afternoon breezes and cozy local coffee houses.",
+      img: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Trấn Quốc Pagoda",
+      tag: "8 min walk across causeway",
+      desc: "Vietnam's oldest Buddhist temple founded in the 6th century, situated on a small scenic islet on West Lake.",
+      img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Quán Thánh Taoist Temple",
+      tag: "10 min walk",
+      desc: "Ancient 11th-century temple guarding the northern entrance of the old citadel, housing an enormous bronze deity statue.",
+      img: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+  d3_c2: [
+    {
+      name: "Hàng Buồm & Mã Mây Streets",
+      tag: "10 min Grab from hotel",
+      desc: "Preserved heritage merchant quarters showing off traditional wooden tube-houses, ancestral temples, and guild alleys.",
+      img: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Đồng Xuân Market Hall",
+      tag: "10 min walk",
+      desc: "The capital's largest historic covered trading building, surrounded by vibrant evening street food alleys.",
+      img: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Tạ Hiện Beer Street Corner",
+      tag: "5 min walk",
+      desc: "Energetic nightlife crossroads crammed with low plastic stools, cold draught Bia Hơi, and sizzling skewers.",
+      img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+
+  // Day 4 & 5
+  d4_c1: [
+    {
+      name: "Việt Hải Village (Cát Bà)",
+      tag: "Tender boat from Peony Cruises",
+      desc: "Picturesque agrarian settlement isolated in a secluded green valley inside Cát Bà National Park.",
+      img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Rainforest Valley Cycling Trail",
+      tag: "5 km paved route on island",
+      desc: "Pedal bicycles or take an open-air electric cart along karst cliff tunnels and mountain passes to reach the valley.",
+      img: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Valley Homesteads & Natural Fish Brook",
+      tag: "In Việt Hải village",
+      desc: "Walk through traditional clay-and-straw homes and rest your feet in mountain streams where small fish gently nibble.",
+      img: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+  d4_c2: [
+    {
+      name: "Dark & Bright Cave (Hang Sáng Tối)",
+      tag: "Direct kayak launch from cruise",
+      desc: "Low-ceilinged tidal limestone tunnel navigated by sit-on-top sea kayaks or bamboo rafts rowed by local boatmen.",
+      img: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Enclosed Karst Marine Lagoon",
+      tag: "Past the cave opening",
+      desc: "A breathtaking mirror-smooth saltwater lake completely ringed by sheer vertical limestone cliffs and hanging orchids.",
+      img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Trà Báu Bay Deep Water Swimming",
+      tag: "Main Lan Ha Bay waters",
+      desc: "Jump straight off the ship's stern platform into clean, warm bay waters framed by limestone karsts.",
+      img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+
+  // Day 6 & 7
+  d6_c1: [
+    {
+      name: "Tràng An Boat Wharf (Route 2 / 3)",
+      tag: "15 min drive (9 km) from resort",
+      desc: "UNESCO World Heritage rowed sampan excursion threading directly through 4 limestone grottos and submerged caves.",
+      img: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Suối Tiên & Cao Sơn Water Temples",
+      tag: "Along sampan river route",
+      desc: "Secluded imperial pavilions and shrines resting above the water at the base of precipitous karst walls.",
+      img: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Đại Huệ & Lam Cave Tunnels",
+      tag: "Submerged grotto passage",
+      desc: "Long cavern tunnels with spectacular hanging stalactites illuminated overhead as boatmen glide beneath.",
+      img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+  d6_c2: [
+    {
+      name: "Hang Múa (Mua Cave Ridge Peak)",
+      tag: "8 min drive (4 km) from resort",
+      desc: "500 carved stone stairs climbing up to a jagged stone dragon shrine overlooking panoramic Tam Cốc river vistas.",
+      img: "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Tam Cốc River Sampan Route",
+      tag: "Near Tam Cốc Oasis Resort",
+      desc: "Famous boat route where local boatwomen row with their feet, passing under three river caverns along the Ngô Đồng river.",
+      img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Bích Động Pagoda",
+      tag: "5 min bicycle pedal",
+      desc: "Tiered 15th-century pagoda with an iconic stone arch bridge crossing a lotus lagoon into hidden mountain caves.",
+      img: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+  d6_c3: [
+    {
+      name: "Hoa Lư Ancient Dynastic Capital",
+      tag: "20 min drive (14 km)",
+      desc: "Vietnam's 10th-century royal capital, preserving ancestral shrines to Emperor Đinh Tiên Hoàng within a natural fortress.",
+      img: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Tuyệt Tình Cốc (Am Tiên Cave)",
+      tag: "5 min drive from Hoa Lư",
+      desc: "Ancient mountain fortress gateway leading to an emerald lake framed on all four sides by limestone cliffs.",
+      img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Vân Long Wetland Nature Reserve",
+      tag: "25 min drive north",
+      desc: "Serene flat-bottom reed boat ride through flooded wetlands; prime natural sanctuary for rare wild Delacour's langurs.",
+      img: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+
+  // Day 8 & 9
+  d8_c1: [
+    {
+      name: "Quảng Phú Cầu Incense Village",
+      tag: "1 hr 15 min drive (35 km)",
+      desc: "Renowned craft village where hundreds of vibrant crimson and golden incense bundles are arranged like blooming lotus flowers.",
+      img: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Incense Dyeing & Bamboo Workshops",
+      tag: "In Quảng Phú Cầu village",
+      desc: "Observe master artisans hand-splitting bamboo reeds, dyeing fragrant paste, and drying incense bundles under the autumn sun.",
+      img: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Bát Tràng Ceramic Village",
+      tag: "30 min drive back toward Hanoi",
+      desc: "Centuries-old pottery kilns along the Red River, featuring hands-on ceramic wheels and intricate glazed porcelain markets.",
+      img: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+  d8_c2: [
+    {
+      name: "Temple of Literature (Văn Miếu)",
+      tag: "10 min Grab from hotel",
+      desc: "Built in 1070 as Vietnam's first national university, showcasing landscaped courtyards and stone turtles bearing doctor steles.",
+      img: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Imperial Citadel of Thăng Long",
+      tag: "5 min Grab",
+      desc: "UNESCO World Heritage royal complex preserving relics of royal palaces and the underground D67 military command bunker.",
+      img: "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Hoàn Kiếm Lake & Ngọc Sơn Temple",
+      tag: "10 min Grab",
+      desc: "Spiritual heart of Hanoi; cross the scarlet-painted wooden Húc Bridge onto the island temple as city lanterns glow.",
+      img: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+  d8_c3: [
+    {
+      name: "Hanoi Train Street",
+      tag: "7 min Grab from Flower Garden Hotel",
+      desc: "Tight residential railway corridor lined with tiny cafes where trains rumble past inches from your table.",
+      img: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Phố Cổ (Old Quarter 36 Guilds)",
+      tag: "5 min walk",
+      desc: "Wander historic guild streets specializing in silk, spices, lanterns, and silver, packed with steaming street food stalls.",
+      img: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Thăng Long Water Puppet Theatre",
+      tag: "Beside Hoàn Kiếm Lake",
+      desc: "Charming traditional theatre where wooden puppets perform ancient agrarian folklore atop a waist-deep water stage.",
+      img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80"
+    }
+  ]
+};
+
+const eateries = {
+  f_banhmi: {
+    name: "Bánh Mì Huỳnh Hoa",
+    tag: "15 min Grab ride (District 1)",
+    dish: "Heavily Layered Charcuterie Baguette with House Pâté",
+    desc: "Saigon's most famous sandwich shop, packed with thick slabs of pork ham, cha lua, pork floss, and rich, creamy liver pâté in a warm, crunchy baguette.",
+    img: "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?auto=format&fit=crop&w=600&q=80"
+  },
+  f_comtam: {
+    name: "Cơm Tấm Ba Ghiền",
+    tag: "20 min Grab ride (Phu Nhuan)",
+    dish: "Broken Rice with Giant Charcoal Lemongrass Pork Chop",
+    desc: "Michelin Bib Gourmand legend. Served with an oversized pork chop caramelized over open charcoal, accompanied by steamed egg-meatloaf, shredded pork skin, and fish sauce.",
+    img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80"
+  },
+  f_quananngon: {
+    name: "Quán Ăn Ngon (Saigon)",
+    tag: "15 min Grab ride (160 Pasteur)",
+    dish: "Pan-Vietnamese Meat Feast & Crispy Bánh Xèo",
+    desc: "Charming colonial garden villa featuring open live cooking stations. Excellent for grilled pork skewers, crispy seafood pancakes, and Hanoi-style crab spring rolls.",
+    img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80"
+  },
+  f_phocuon: {
+    name: "Phở Cuốn Hương Mai (Trúc Bạch)",
+    tag: "250 meters (3 min walk from Luxe Paradise)",
+    dish: "Fresh Rolled Beef Phở Sheets & Crispy Deep-Fried Phở",
+    desc: "Located on Ngũ Xã island right beside your hotel. Silky fresh uncut rice noodle sheets rolled around tender wok-seared garlic beef, cilantro, and fragrant herbs.",
+    img: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=600&q=80"
+  },
+  f_chaca: {
+    name: "Chả Cá Thăng Long",
+    tag: "7 min Grab ride (Old Quarter)",
+    dish: "Turmeric Catfish Fillets Sizzling with Fresh Dill",
+    desc: "Iconic Hanoi specialty. Tender marinated river catfish fried tableside in a hot skillet with generous heaps of fresh dill and scallions, served over rice vermicelli and peanuts.",
+    img: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80"
+  },
+  f_cruise: {
+    name: "Peony Cruises Gourmet Dining Room",
+    tag: "Included full-board on cruise",
+    dish: "Lan Ha Bay Fresh Seafood Banquet",
+    desc: "Multi-course feast highlighting fresh regional marine catch: steamed lemongrass tiger prawns, grilled squid, pan-seared sea bass, and tender Vietnamese pork cuts.",
+    img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80"
+  },
+  f_baichay: {
+    name: "Bãi Cháy Coastal Seafood Street",
+    tag: "10 min boat + transfer from Vinpearl pier",
+    dish: "Live-Tank Seafood Barbecue & Garlic Butter Oysters",
+    desc: "Vibrant coastal strip lined with live aquariums. Pick your fresh mantis shrimp, grilled scallops with scallion oil, garlic mud crab, and hot clam porridge.",
+    img: "https://images.unsplash.com/photo-1559742811-82286364ceaf?auto=format&fit=crop&w=600&q=80"
+  },
+  f_denui: {
+    name: "Nhà Hàng Thăng Long (Tràng An Road)",
+    tag: "10 min drive from Tràng An pier",
+    dish: "Dê Núi (Mountain Goat) & Crispy Puffed Cơm Cháy",
+    desc: "Ninh Bình's premier mountain goat restaurant. Must-tries include Dê Tái Chanh (lime-cured goat with ginger and sesame) and charcoal-grilled goat ribs served with savory broth.",
+    img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80"
+  },
+  f_tamcocbistro: {
+    name: "Tam Cốc Village Local Bistros",
+    tag: "500 m walk from Tam Cốc pier",
+    dish: "Charcoal Grilled Lemongrass Pork Skewers & Crispy Duck",
+    desc: "Relaxed open-air village eateries serving freshly roasted whole duck, savory minced pork wrapped in betel leaves (Bò Lá Lốt), and local mountain greens.",
+    img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80"
+  },
+  f_buncha: {
+    name: "Bún Chả Hương Liên (The Obama Spot)",
+    tag: "12 min Grab ride (3.8 km from Flower Garden)",
+    dish: "Charcoal-Grilled Pork Patties & Nem Cua Bể (Crab Rolls)",
+    desc: "The famous venue where Anthony Bourdain and President Obama dined. Smoky grilled pork meatballs and pork belly steeped in tangy fish sauce broth with rice vermicelli.",
+    img: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=600&q=80"
+  },
+  f_phogiadinh: {
+    name: "Phở Gia Truyền Bát Đàn",
+    tag: "10 min walk (1.2 km from Flower Garden Hotel)",
+    dish: "Historic Slow-Simmered Beef Phở Bò (Tái Nạm)",
+    desc: "A century-old Hanoi institution. Clear, deeply aromatic beef bone broth simmered overnight with star anise, poured over flat rice noodles and freshly sliced flank steak.",
+    img: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80"
   }
+};
+
+function renderDay(dayKey) {
+  const actKey = document.getElementById('sel-act-' + dayKey).value;
+  const foodKey = document.getElementById('sel-food-' + dayKey).value;
+
+  // Render Sightseeing Spots
+  const spotsContainer = document.getElementById('spots-' + dayKey);
+  const spotList = circuits[actKey] || [];
+  spotsContainer.innerHTML = spotList.map(spot => `
+    <div class="spot-card">
+      <img class="spot-img" src="${spot.img}" alt="${spot.name}" loading="lazy" />
+      <div class="spot-body">
+        <div class="spot-name">${spot.name}</div>
+        <span class="spot-tag tag-transit">${spot.tag}</span>
+        <div class="spot-desc">${spot.desc}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Render Eatery Card
+  const foodContainer = document.getElementById('food-detail-' + dayKey);
+  const food = eateries[foodKey];
+  if (food) {
+    foodContainer.innerHTML = `
+      <div class="eatery-card">
+        <img class="eatery-img" src="${food.img}" alt="${food.name}" loading="lazy" />
+        <div class="eatery-body">
+          <div class="spot-name" style="font-size: 16px;">${food.name}</div>
+          <span class="spot-tag tag-food">${food.tag}</span>
+          <div style="font-weight: 700; font-size: 13px; color: var(--primary); margin-bottom: 6px;">Must-Order: ${food.dish}</div>
+          <div class="spot-desc">${food.desc}</div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+// Initialise all days
+['day1', 'day2', 'day3', 'day4', 'day6', 'day8'].forEach(renderDay);
 </script>
 </body>
 </html>
